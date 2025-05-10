@@ -67,6 +67,7 @@ class _StackedReactionsWidgetState extends State<StackedReactionsWidget> {
         );
 
     return Container(
+      width: 50,
       padding: const EdgeInsets.symmetric(horizontal: 3),
       decoration: BoxDecoration(
         borderRadius: style.borderRadius,

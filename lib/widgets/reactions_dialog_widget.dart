@@ -160,6 +160,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                         });
                       }
                     });
+                    Navigator.pop(context);
                   },
                   child: Pulse(
                     duration: const Duration(milliseconds: 500),
@@ -256,6 +257,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                         });
                       }
                     });
+                    Navigator.pop(context);
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
