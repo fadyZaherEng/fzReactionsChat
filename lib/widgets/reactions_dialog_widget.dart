@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:animate_do/animate_do.dart';
+import 'package:animate_do/animate_do.dart' ;
 import 'package:flutter/material.dart';
 import 'package:fz_reactions_chat/config/theme/color_schemes.dart';
 import 'package:fz_reactions_chat/utils/constants.dart';
