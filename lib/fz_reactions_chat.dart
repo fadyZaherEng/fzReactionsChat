@@ -16,12 +16,12 @@ class FzReactionsChat {
   /// The dialog is modal and will not dismiss on outside tap.
   void showReactionsDialog({
     required BuildContext context,
-    // Consider changing `dynamic` to your actual `Message` class type
-    required dynamic massage,
+
+    /// Reaction selected by me
+    required String reactionSelectedByMy,
     required bool isMe,
-    required int currentUserId,
-    required void Function(String, dynamic) onContextMenuSelected,
-    required void Function(String, dynamic) onEmojiSelected,
+    required void Function(String, String messageId) onContextMenuSelected,
+    required void Function(String, String messageId) onEmojiSelected,
     required void Function() setMassageReplyNull,
     required void Function(String) onTapPreviewImage,
     required void Function(dynamic) onReplyScroll,
@@ -33,6 +33,9 @@ class FzReactionsChat {
     required String closeText,
     required Widget myMassageContent,
     required Widget receiveMassageContent,
+
+    /// The message object (expected to have `messageReactions` and `messageReactionsCount`).
+    required String messageId,
   }) {
     showDialog(
       context: context,
@@ -48,19 +51,19 @@ class FzReactionsChat {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: ReactionsDialogWidget(
-              message: massage,
+              reactionSelectedByMy: reactionSelectedByMy,
               isMe: isMe,
               onTapPreviewImage: onTapPreviewImage,
               onContextMenuSelected: onContextMenuSelected,
               onEmojiSelected: onEmojiSelected,
               setMassageReplyNull: setMassageReplyNull,
-              currentUserId: currentUserId,
               myMassageContent: myMassageContent,
               receiverMassageContent: receiveMassageContent,
               replayText: replayText,
               copyText: copyText,
               deleteText: deleteText,
               closeText: closeText,
+              messageId: messageId,
             ),
           ),
         );
@@ -71,7 +74,12 @@ class FzReactionsChat {
   Widget stackReactions({
     /// The message object that contains reaction data.
     /// Must have `messageReactions` and `messageReactionsCount` lists.
-    required dynamic massage,
+    ///
+    /// message Reactions By Count For Each Reaction
+    required Map<String, int> messageReactionsByCountForEachReaction,
+
+    ///All Massage Reaction
+    required Map<String, int> allMessageReactions,
 
     /// Whether the message was sent by the current user.
     required bool isMe,
@@ -86,10 +94,12 @@ class FzReactionsChat {
     required VoidCallback onPressed,
 
     /// Optional custom style for the widget.
-    required ReactionStyle? style,
+    // required ReactionStyle? style,
   }) {
     return StackedReactionsWidget(
-      massage: massage,
+      messageReactionsByCountForEachReaction:
+          messageReactionsByCountForEachReaction,
+      allMessageReactions: allMessageReactions,
       size: size,
       onPressed: onPressed,
       isMe: isMe,

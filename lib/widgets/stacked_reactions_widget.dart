@@ -9,7 +9,11 @@ import 'package:flutter/material.dart';
 class StackedReactionsWidget extends StatefulWidget {
   /// The message object that contains reaction data.
   /// Must have `messageReactions` and `messageReactionsCount` lists.
-  final dynamic massage;
+  ///
+  /// message Reactions By Count For Each Reaction
+  final Map<String, int> messageReactionsByCountForEachReaction;
+  ///All Massage Reaction
+  final Map<String, int> allMessageReactions;
 
   /// Whether the message was sent by the current user.
   final bool isMe;
@@ -28,7 +32,8 @@ class StackedReactionsWidget extends StatefulWidget {
 
   const StackedReactionsWidget({
     super.key,
-    required this.massage,
+    required this.messageReactionsByCountForEachReaction,
+    required this.allMessageReactions,
     required this.size,
     required this.onPressed,
     required this.isMe,
@@ -46,8 +51,8 @@ class _StackedReactionsWidgetState extends State<StackedReactionsWidget> {
     return GestureDetector(
       onTap: widget.onPressed,
       child: _buildReactionContainer(
-        reactions: widget.massage.messageReactionsCount
-            .map<String>((e) => e.reaction)
+        reactions: widget.messageReactionsByCountForEachReaction.entries
+            .map<String>((e) => e.key)
             .toList(),
       ),
     );
@@ -100,18 +105,18 @@ class _StackedReactionsWidgetState extends State<StackedReactionsWidget> {
   }
 
   bool _shouldShowCountBefore() {
-    return widget.massage.messageReactions.length > 1 && widget.isMe;
+    return widget.allMessageReactions.length > 1 && widget.isMe;
   }
 
   bool _shouldShowCountAfter() {
-    return widget.massage.messageReactions.length > 1 && !widget.isMe;
+    return widget.allMessageReactions.length > 1 && !widget.isMe;
   }
 
   Widget _buildCountWidget(ReactionStyle style) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Text(
-        widget.massage.messageReactions.length.toString(),
+        widget.allMessageReactions.length.toString(),
         textAlign: TextAlign.center,
         style: style.countTextStyle,
       ),

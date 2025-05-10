@@ -17,21 +17,21 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Chat Reactions'),
+      home: const ChatReactions(title: 'Flutter Chat Reactions'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class ChatReactions extends StatefulWidget {
+  const ChatReactions({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ChatReactions> createState() => _ChatReactionsState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ChatReactionsState extends State<ChatReactions> {
   FzReactionsChat fzReactionsChat = FzReactionsChat();
 
   @override
@@ -44,36 +44,39 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 50),
             TextButton(
               onPressed: () {
                 fzReactionsChat.showReactionsDialog(
                   context: context,
-                  massage: massage,
-                  isMe: isMe,
-                  currentUserId: currentUserId,
-                  onContextMenuSelected: onContextMenuSelected,
-                  onEmojiSelected: onEmojiSelected,
-                  setMassageReplyNull: setMassageReplyNull,
-                  onTapPreviewImage: onTapPreviewImage,
-                  onReplyScroll: onReplyScroll,
-                  replayText: replayText,
-                  copyText: copyText,
-                  deleteText: deleteText,
-                  closeText: closeText,
-                  myMassageContent: myMassageContent,
-                  receiveMassageContent: receiveMassageContent,
+                  isMe: true,
+                  onContextMenuSelected: (context, massageId) {},
+                  onEmojiSelected: (reaction, massageId) {},
+                  setMassageReplyNull: () {},
+                  onTapPreviewImage: (image) {},
+                  onReplyScroll: (_) {},
+                  replayText: "Replay",
+                  copyText: "Copy",
+                  deleteText: "Delete",
+                  closeText: "Close",
+                  myMassageContent: const Text("My Massage"),
+                  receiveMassageContent: const Text("receive Massage"),
+                  messageId: "5",
+                  reactionSelectedByMy: "❤️",
                 );
               },
-              child: const Text("Show Reaction Chat"),
+              child: const Text("Show Reaction Dialog Chat"),
             ),
+            const SizedBox(height: 50),
             fzReactionsChat.stackReactions(
-              massage: massage,
-              isMe: isMe,
-              isDialogReactions: isDialogReactions,
-              size: size,
-              onPressed: onPressed,
-              style: style,
+              isMe: true,
+              isDialogReactions: true,
+              size: 20,
+              onPressed: () {},
+              allMessageReactions: {"❤️": 5},
+              messageReactionsByCountForEachReaction: {"❤️": 1},
             ),
+            const SizedBox(height: 50),
           ],
         ),
       ),

@@ -20,9 +20,6 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// Callback to clear the reply state externally.
   final void Function() setMassageReplyNull;
 
-  /// ID of the current user.
-  final int currentUserId;
-
   /// Callback for tapping on an image preview.
   final void Function(String imageUrl) onTapPreviewImage;
 
@@ -39,7 +36,10 @@ class ReactionsDialogWidget extends StatefulWidget {
   final String closeText;
 
   /// The message object (expected to have `messageReactions` and `messageReactionsCount`).
-  final dynamic message;
+  final String messageId;
+
+  /// Reaction selected by me
+  final String reactionSelectedByMy;
 
   const ReactionsDialogWidget({
     super.key,
@@ -47,7 +47,6 @@ class ReactionsDialogWidget extends StatefulWidget {
     required this.onEmojiSelected,
     required this.onContextMenuSelected,
     required this.setMassageReplyNull,
-    required this.currentUserId,
     required this.onTapPreviewImage,
     required this.myMassageContent,
     required this.receiverMassageContent,
@@ -55,7 +54,8 @@ class ReactionsDialogWidget extends StatefulWidget {
     required this.copyText,
     required this.deleteText,
     required this.replayText,
-    required this.message,
+    required this.messageId,
+    required this.reactionSelectedByMy,
   });
 
   @override
@@ -75,13 +75,10 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
   int clickedReactionIndex = -1;
   bool contextMenuClicked = false;
   int clickedContextMenuIndex = -1;
-  List<String> selectedReactions = [];
 
   @override
   void initState() {
     super.initState();
-    selectedReactions =
-        widget.message.messageReactionsCount.map((e) => e.reaction).toList();
   }
 
   @override
@@ -133,8 +130,8 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: (widget.isMe
-                ? ColorSchemes.greyDivider
-                : const Color(0xFFF4EBFE))
+                    ? ColorSchemes.greyDivider
+                    : const Color(0xFFF4EBFE))
                 .withOpacity(0.9),
           ),
           child: Row(
@@ -142,7 +139,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
             children: _reactions.map((reaction) {
               final int index = _reactions.indexOf(reaction);
               final bool isAddButton = reaction == "➕";
-              final bool isSelected = _isReactionSelectedByMe(reaction);
+              final bool isSelected = reaction == widget.reactionSelectedByMy;
               final bool shouldAnimate =
                   reactionClicked && clickedReactionIndex == index;
 
@@ -151,7 +148,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                 from: (index * 20).toDouble(),
                 child: InkWell(
                   onTap: () {
-                    widget.onEmojiSelected(reaction, widget.message.id);
+                    widget.onEmojiSelected(reaction, widget.messageId);
                     setState(() {
                       reactionClicked = true;
                       clickedReactionIndex = index;
@@ -171,37 +168,36 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                       padding: isAddButton
                           ? const EdgeInsets.all(4)
                           : isSelected
-                          ? const EdgeInsets.all(2)
-                          : const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 8,
-                      ),
+                              ? const EdgeInsets.all(2)
+                              : const EdgeInsets.symmetric(
+                                  vertical: 6,
+                                  horizontal: 8,
+                                ),
                       margin: isAddButton
                           ? const EdgeInsets.symmetric(horizontal: 6)
                           : EdgeInsets.zero,
                       decoration: BoxDecoration(
-                        shape: isAddButton
-                            ? BoxShape.circle
-                            : BoxShape.rectangle,
+                        shape:
+                            isAddButton ? BoxShape.circle : BoxShape.rectangle,
                         borderRadius: isAddButton
                             ? null
                             : isSelected
-                            ? BorderRadius.circular(6)
-                            : BorderRadius.zero,
+                                ? BorderRadius.circular(6)
+                                : BorderRadius.zero,
                         color: isAddButton
                             ? ColorSchemes.gray.withOpacity(0.4)
                             : isSelected && widget.isMe
-                            ? ColorSchemes.iconBackGround.withOpacity(0.7)
-                            : isSelected
-                            ? ColorSchemes.primary.withOpacity(0.2)
-                            : Colors.transparent,
+                                ? ColorSchemes.iconBackGround.withOpacity(0.7)
+                                : isSelected
+                                    ? ColorSchemes.primary.withOpacity(0.2)
+                                    : Colors.transparent,
                       ),
                       child: Text(
                         reaction,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: ColorSchemes.white,
-                          fontSize: isAddButton ? 14 : 18,
-                        ),
+                              color: ColorSchemes.white,
+                              fontSize: isAddButton ? 14 : 18,
+                            ),
                       ),
                     ),
                   ),
@@ -220,7 +216,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
       duration: const Duration(milliseconds: 500),
       from: 100,
       child:
-      widget.isMe ? widget.myMassageContent : widget.receiverMassageContent,
+          widget.isMe ? widget.myMassageContent : widget.receiverMassageContent,
     );
   }
 
@@ -248,8 +244,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                 from: (index * 20).toDouble(),
                 child: InkWell(
                   onTap: () {
-                    widget.onContextMenuSelected(
-                        contextMenu, widget.message.id);
+                    widget.onContextMenuSelected(contextMenu, widget.messageId);
                     setState(() {
                       contextMenuClicked = true;
                       clickedContextMenuIndex = index;
@@ -273,10 +268,10 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                         Text(
                           _getText(contextMenu),
                           style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: ColorSchemes.black,
-                            fontSize: 14,
-                          ),
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: ColorSchemes.black,
+                                    fontSize: 14,
+                                  ),
                         ),
                         Pulse(
                           infinite: false,
@@ -287,10 +282,10 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                             contextMenu == Constants.reply
                                 ? Icons.reply
                                 : contextMenu == Constants.copy
-                                ? Icons.copy
-                                : contextMenu == Constants.delete
-                                ? Icons.delete
-                                : Icons.close,
+                                    ? Icons.copy
+                                    : contextMenu == Constants.delete
+                                        ? Icons.delete
+                                        : Icons.close,
                             color: ColorSchemes.primary,
                           ),
                         ),
@@ -304,13 +299,5 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         ),
       ),
     );
-  }
-
-  /// Checks if the current user has already selected a given reaction.
-  bool _isReactionSelectedByMe(String reaction) {
-    return selectedReactions.contains(reaction) &&
-        widget.message.messageReactions.any((element) =>
-        element.reaction == reaction &&
-            element.userId == widget.currentUserId);
   }
 }

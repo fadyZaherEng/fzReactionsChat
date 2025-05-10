@@ -1,9 +1,8 @@
 name: fz_reactions_chat
 description: "Reactions Chat Package"
+repository: https://github.com/fadyZaherEng/fzReactionsChat
+homepage: https://github.com/fadyZaherEng/fzReactionsChat
 version: 0.0.1
-repository:
-homepage:
-
 environment:
   sdk: '>=3.3.1 <4.0.0'
   flutter: ">=1.17.0"
