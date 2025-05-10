@@ -92,13 +92,9 @@ class FzReactionsChat {
 
     /// Callback when the widget is tapped.
     required VoidCallback onPressed,
-
-    /// Optional custom style for the widget.
-    // required ReactionStyle? style,
   }) {
     return StackedReactionsWidget(
-      messageReactionsByCountForEachReaction:
-          messageReactionsByCountForEachReaction,
+      messageReactionsByCountForEachReaction: messageReactionsByCountForEachReaction,
       allMessageReactions: allMessageReactions,
       size: size,
       onPressed: onPressed,
