@@ -15,13 +15,10 @@ A Flutter package for show Reaction Dialog Chat And Stack Widget.
 
 ## 🎥 Check out the video trimming in action!
 ## Screens
-| ![Screen 1](https://raw.githubusercontent.com/fadyZaherEng/flutterVideoTrimmerTest/master/assets/1.jpg) | ![Screen 2](https://raw.githubusercontent.com/fadyZaherEng/flutterVideoTrimmerTest/master/assets/2.jpg) |  
+| ![Screen 1](https://raw.githubusercontent.com/fadyZaherEng/fzReactionsChat/master/assets/1.jpg) | ![Screen 2](https://raw.githubusercontent.com/fadyZaherEng/fzReactionsChat/master/assets/2.jpg) |  
 |:-----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------:| 
 
-## GIF DEMO
- ![GIF DEMO](https://raw.githubusercontent.com/fadyZaherEng/flutterVideoTrimmerTest/master/assets/demo.gif) | 
- |:---------------------------------------------------------------------------------------------------------------:| 
-
+ 
 --- 
 ## Features
 
@@ -94,7 +91,7 @@ messageReactionsByCountForEachReaction: {"❤️": 1},
 ```
 ## Example
 
-```dart 
+```dart  
 class ChatReactions extends StatefulWidget {
   const ChatReactions({super.key, required this.title});
 
@@ -140,14 +137,38 @@ class _ChatReactionsState extends State<ChatReactions> {
               },
               child: const Text("Show Reaction Dialog Chat"),
             ),
-            const SizedBox(height: 50),
-            fzReactionsChat.stackReactions(
-              isMe: true,
-              isDialogReactions: true,
-              size: 20,
-              onPressed: () {},
-              allMessageReactions: {"❤️": 5},
-              messageReactionsByCountForEachReaction: {"❤️": 1},
+            const SizedBox(height: 200),
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 30,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.purple,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 5,
+                    right: 0,
+                    child: fzReactionsChat.stackReactions(
+                      isMe: true,
+                      isDialogReactions: true,
+                      size: 20,
+                      width: 50,
+                      onPressed: () {},
+                      allMessageReactions: {"❤️": 5},
+                      messageReactionsByCountForEachReaction: {"❤️": 1},
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 50),
           ],
