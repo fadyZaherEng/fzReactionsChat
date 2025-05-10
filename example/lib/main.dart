@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:fz_reactions_chat/fz_reactions_chat.dart';
+ import 'package:flutter/material.dart';
+ import 'package:fz_reactions_chat/fz_reactions_chat.dart';
 
 void main() {
   runApp(const MyApp());
