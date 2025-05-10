@@ -89,6 +89,7 @@ class FzReactionsChat {
 
     /// Font size for the emoji reactions.
     required double size,
+    required double width,
 
     /// Callback when the widget is tapped.
     required VoidCallback onPressed,
@@ -100,6 +101,7 @@ class FzReactionsChat {
       onPressed: onPressed,
       isMe: isMe,
       isDialogReactions: isDialogReactions,
+      width: width,
     );
   }
 }
