@@ -12,6 +12,7 @@ class StackedReactionsWidget extends StatefulWidget {
   ///
   /// message Reactions By Count For Each Reaction
   final Map<String, int> messageReactionsByCountForEachReaction;
+
   ///All Massage Reaction
   final Map<String, int> allMessageReactions;
 
@@ -23,6 +24,7 @@ class StackedReactionsWidget extends StatefulWidget {
 
   /// Font size for the emoji reactions.
   final double size;
+  final double width;
 
   /// Callback when the widget is tapped.
   final VoidCallback onPressed;
@@ -39,6 +41,7 @@ class StackedReactionsWidget extends StatefulWidget {
     required this.isMe,
     required this.isDialogReactions,
     this.style,
+    this.width=50,
   });
 
   @override
@@ -67,14 +70,9 @@ class _StackedReactionsWidgetState extends State<StackedReactionsWidget> {
         );
 
     return Container(
-      width: 50,
+      width: widget.width,
       padding: const EdgeInsets.symmetric(horizontal: 3),
-      decoration: BoxDecoration(
-        borderRadius: style.borderRadius,
-        color: style.backgroundColor,
-        border: Border.all(color: style.borderColor, width: style.borderWidth),
-      ),
-      child: ClipOval(
+       child: ClipOval(
         child: Padding(
           padding: style.padding,
           child: Row(
